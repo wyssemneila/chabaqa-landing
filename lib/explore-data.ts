@@ -1,6 +1,6 @@
 // ── Types ─────────────────────────────────────────────────────────────────
 export type ContentType = 'community' | 'course' | 'challenge' | 'product' | 'session' | 'event'
-export type Category    = 'all' | 'fitness' | 'education' | 'technology' | 'business' | 'creative' | 'arts'
+export type Category    = 'all' | 'fitness' | 'education' | 'technology' | 'business' | 'creative' | 'language'
 
 export interface ExploreItem {
   id:               string
@@ -10,8 +10,9 @@ export interface ExploreItem {
   desc:             string
   creator:          string
   creatorInitials:  string
+  creatorAvatar?:   string          // path to creator avatar image
   creatorColor:     string
-  coverGradient:    string
+  banner:           string          // path to banner image (required)
   price:            number | 'free'
   currency?:        string
   members?:         number
@@ -24,37 +25,18 @@ export interface ExploreItem {
 }
 
 // ── Categories ────────────────────────────────────────────────────────────
-export const CATEGORIES: Category[] = ['all', 'fitness', 'education', 'technology', 'business', 'creative', 'arts']
-
-export const CATEGORY_LABELS: Record<Category, string> = {
-  all:        'All',
-  fitness:    'Fitness',
-  education:  'Education',
-  technology: 'Technology',
-  business:   'Business',
-  creative:   'Creative',
-  arts:       'Arts',
-}
+export const CATEGORIES: Category[] = ['all', 'fitness', 'education', 'technology', 'business', 'creative', 'language']
 
 // ── Content types ─────────────────────────────────────────────────────────
 export const CONTENT_TYPES: ContentType[] = ['community', 'course', 'challenge', 'product', 'session', 'event']
 
 export const TYPE_CONFIG: Record<ContentType, { label: string; bg: string; color: string; border: string }> = {
-  community: { label: 'Community',  bg: 'var(--p2)',  color: 'var(--p)',      border: 'var(--p3)'  },
-  course:    { label: 'Course',     bg: 'var(--o2)',  color: 'var(--orange)', border: '#fde5bb'    },
-  challenge: { label: 'Challenge',  bg: 'var(--c2)',  color: 'var(--cyan)',   border: '#a5f3fc'    },
-  product:   { label: 'Product',    bg: 'var(--pk2)', color: 'var(--pink)',   border: '#fda4af'    },
-  session:   { label: '1:1 Session',bg: 'var(--o2)',  color: 'var(--orange)', border: '#fde5bb'    },
-  event:     { label: 'Event',      bg: 'var(--p2)',  color: 'var(--p)',      border: 'var(--p3)'  },
-}
-
-export const TYPE_LABELS: Record<ContentType, string> = {
-  community: 'Community',
-  course:    'Course',
-  challenge: 'Challenge',
-  product:   'Product',
-  session:   '1:1 Session',
-  event:     'Event',
+  community: { label: 'Community',   bg: 'rgba(71,199,234,0.12)',  color: '#47c7ea',  border: 'rgba(71,199,234,0.3)'  },
+  course:    { label: 'Course',      bg: 'rgba(71,199,234,0.12)',  color: '#47c7ea',  border: 'rgba(71,199,234,0.3)'  },
+  challenge: { label: 'Challenge',   bg: 'rgba(255,155,40,0.12)',  color: '#ff9b28',  border: 'rgba(255,155,40,0.3)'  },
+  product:   { label: 'Product',     bg: 'rgba(142,120,251,0.12)', color: '#8e78fb',  border: 'rgba(142,120,251,0.3)' },
+  session:   { label: '1:1 Session', bg: 'rgba(246,88,135,0.12)',  color: '#f65887',  border: 'rgba(246,88,135,0.3)'  },
+  event:     { label: 'Event',       bg: 'rgba(142,120,251,0.12)', color: '#8e78fb',  border: 'rgba(142,120,251,0.3)' },
 }
 
 export const SORT_OPTIONS = [
@@ -65,114 +47,170 @@ export const SORT_OPTIONS = [
   { value: 'price-high', label: 'Price: High to Low'  },
 ] as const
 
-// ── Mock data ─────────────────────────────────────────────────────────────
+// ── Featured Communities ───────────────────────────────────────────────────
+export const FEATURED_COMMUNITIES: ExploreItem[] = [
+  {
+    id: 'f1',
+    type: 'community', category: 'business',
+    title: 'RYEDA',
+    desc: 'A business growth community by Ahmed Hatem. Courses, sessions, and challenges to help you scale your business.',
+    creator: 'Ahmed Hatem', creatorInitials: 'AH', creatorColor: '#8e78fb',
+    creatorAvatar: '/images/explore/banner8.webp',
+    banner: '/images/explore/banner9.webp',
+    price: 'free', members: 156, rating: 4.8, ratingCount: 42, verified: true, featured: true,
+  },
+  {
+    id: 'f2',
+    type: 'community', category: 'fitness',
+    title: 'Runflow',
+    desc: 'The #1 running community in Tunisia. Training plans, challenges, and a supportive community to keep you moving.',
+    creator: 'Bassem Dridi', creatorInitials: 'BD', creatorColor: '#ff9b28',
+    creatorAvatar: '/images/explore/banner7.webp',
+    banner: '/images/explore/banner6.png',
+    price: 'free', members: 89, rating: 4.9, ratingCount: 28, verified: true, featured: true,
+  },
+  {
+    id: 'f3',
+    type: 'community', category: 'creative',
+    title: 'Motion Masters',
+    desc: 'Learn motion design, After Effects, and animation from professional creators. Arabic content, global techniques.',
+    creator: 'Mohamed Ismail', creatorInitials: 'MI', creatorColor: '#f65887',
+    creatorAvatar: '/images/explore/banner2.jpeg',
+    banner: '/images/explore/banner3.webp',
+    price: 'free', members: 312, rating: 4.7, ratingCount: 67, verified: true, featured: true,
+  },
+  {
+    id: 'f4',
+    type: 'community', category: 'language',
+    title: 'French Academy',
+    desc: 'Master the French language with an Arabic-speaking teacher. Structured courses, live sessions, and practice challenges.',
+    creator: 'Wyssem Neila', creatorInitials: 'WN', creatorColor: '#47c7ea',
+    creatorAvatar: '/images/explore/banner1.jpeg',
+    banner: '/images/explore/frensh1.png',
+    price: 'free', members: 45, rating: 4.6, ratingCount: 11, verified: false, featured: true,
+  },
+]
+
+// ── Content Items ──────────────────────────────────────────────────────────
 export const EXPLORE_ITEMS: ExploreItem[] = [
   {
     id: '1',
-    type: 'community', category: 'fitness',
-    title: 'FitLife Arabic Community',
-    desc: 'The largest Arabic fitness community — workouts, challenges, and nutrition plans in one place.',
-    creator: 'Coach Karim', creatorInitials: 'CK', creatorColor: '#8e78fb',
-    coverGradient: 'linear-gradient(135deg,#667eea 0%,#764ba2 100%)',
-    price: 'free', members: 4820, rating: 4.8, ratingCount: 312, verified: true, featured: true,
+    type: 'community', category: 'creative',
+    title: 'موشن غرافيك و أنيماشين',
+    desc: 'تعلم الحركة والتصميم بالعربية مع أفضل المحترفين في المنطقة.',
+    creator: 'Mohamed Ismail', creatorInitials: 'MI', creatorColor: '#f65887',
+    creatorAvatar: '/images/explore/banner2.jpeg',
+    banner: '/images/explore/banner4.webp',
+    price: 20, currency: 'TND', members: 23, rating: 4.5, ratingCount: 14, verified: true,
   },
   {
     id: '2',
-    type: 'course', category: 'technology',
-    title: 'Full-Stack Web Dev Bootcamp',
-    desc: 'From zero to job-ready in 12 weeks. React, Node.js, and deployment covered end to end.',
-    creator: 'Sami Tech', creatorInitials: 'ST', creatorColor: '#47c7ea',
-    coverGradient: 'linear-gradient(135deg,#11998e 0%,#38ef7d 100%)',
-    price: 299, currency: 'TND', members: 1240, rating: 4.9, ratingCount: 198, verified: true, duration: '12 weeks',
+    type: 'course', category: 'creative',
+    title: 'After Effect Template Rigging',
+    desc: 'Complete rigging course for After Effects — create dynamic, reusable character rigs from scratch.',
+    creator: 'Mohamed Ismail', creatorInitials: 'MI', creatorColor: '#f65887',
+    creatorAvatar: '/images/explore/banner2.jpeg',
+    banner: '/images/explore/maxresdefault.jpg',
+    price: 13, currency: 'TND', members: 14, rating: 4.0, ratingCount: 1, duration: '6 weeks', verified: true,
   },
   {
     id: '3',
-    type: 'challenge', category: 'fitness',
-    title: '30-Day Ramadan Fitness Challenge',
-    desc: 'Stay active and energized during Ramadan with daily workout and mindfulness challenges.',
-    creator: 'Nour Wellness', creatorInitials: 'NW', creatorColor: '#f65887',
-    coverGradient: 'linear-gradient(135deg,#f093fb 0%,#f5576c 100%)',
-    price: 'free', members: 2100, rating: 4.7, ratingCount: 89,
+    type: 'challenge', category: 'creative',
+    title: 'rigging animation — 🏆 تحدي الـ ٧ أيام — تعلم تحريك الشخصيات',
+    desc: '7-day character animation challenge. Build your rigging skills one day at a time.',
+    creator: 'Mohamed Ismail', creatorInitials: 'MI', creatorColor: '#f65887',
+    creatorAvatar: '/images/explore/banner2.jpeg',
+    banner: '/images/explore/banner5.jpeg',
+    price: 'free', members: 11, verified: true,
   },
   {
     id: '4',
-    type: 'community', category: 'business',
-    title: 'MENA Entrepreneurs Hub',
-    desc: 'Connect with 5,000+ entrepreneurs across North Africa and the Middle East.',
-    creator: 'Startup MENA', creatorInitials: 'SM', creatorColor: '#ff9b28',
-    coverGradient: 'linear-gradient(135deg,#f7971e 0%,#ffd200 100%)',
-    price: 49, currency: 'TND', members: 5300, rating: 4.6, ratingCount: 421, verified: true, featured: true,
+    type: 'session', category: 'business',
+    title: '👑 جلسة تشخيص وتوسيع بيزنسك — من أين تبدأ؟',
+    desc: 'Personalized 1:1 business diagnosis session. Get a clear roadmap for scaling your revenue.',
+    creator: 'Ahmed Hatem', creatorInitials: 'AH', creatorColor: '#8e78fb',
+    creatorAvatar: '/images/explore/banner8.webp',
+    banner: '/images/explore/banner11.png',
+    price: 'free', rating: 4.9, ratingCount: 8, duration: '60 min', verified: true,
   },
   {
     id: '5',
-    type: 'session', category: 'business',
-    title: '1:1 Business Strategy Session',
-    desc: 'Personalized advice on your business model, pricing, and go-to-market strategy.',
-    creator: 'Yasmine Coaching', creatorInitials: 'YC', creatorColor: '#8e78fb',
-    coverGradient: 'linear-gradient(135deg,#4776E6 0%,#8E54E9 100%)',
-    price: 120, currency: 'TND', duration: '60 min', rating: 5.0, ratingCount: 54, verified: true,
+    type: 'course', category: 'business',
+    title: 'دليلك الكامل لتوسيع بيزنسك',
+    desc: 'A complete Arabic guide to expanding your business — strategy, marketing, and monetization.',
+    creator: 'Ahmed Hatem', creatorInitials: 'AH', creatorColor: '#8e78fb',
+    creatorAvatar: '/images/explore/banner8.webp',
+    banner: '/images/explore/banner10.webp',
+    price: 'free', members: 12, verified: true,
   },
   {
     id: '6',
-    type: 'course', category: 'creative',
-    title: 'Arabic Calligraphy Masterclass',
-    desc: 'Learn traditional and modern Arabic calligraphy from a master calligrapher in 8 weeks.',
-    creator: 'Ustaz Bilal', creatorInitials: 'UB', creatorColor: '#ff9b28',
-    coverGradient: 'linear-gradient(135deg,#c94b4b 0%,#4b134f 100%)',
-    price: 149, currency: 'TND', members: 680, rating: 4.9, ratingCount: 145, verified: true, duration: '8 weeks',
+    type: 'session', category: 'business',
+    title: 'Strategy Session — Scale Your Online Business',
+    desc: 'Book a private 1-on-1 session with Ahmed Hatem to map out your growth strategy.',
+    creator: 'Ahmed Hatem', creatorInitials: 'AH', creatorColor: '#8e78fb',
+    creatorAvatar: '/images/explore/banner8.webp',
+    banner: '/images/explore/banner12.png',
+    price: 80, currency: 'TND', duration: '45 min', rating: 5.0, ratingCount: 5, verified: true,
   },
   {
     id: '7',
-    type: 'community', category: 'education',
-    title: 'Bac & Concours Prep Tunisia',
-    desc: 'Everything to ace the Tunisian Bac — past papers, study groups, and expert tutors.',
-    creator: 'EduTN', creatorInitials: 'ET', creatorColor: '#47c7ea',
-    coverGradient: 'linear-gradient(135deg,#00b4db 0%,#0083b0 100%)',
-    price: 'free', members: 12400, rating: 4.5, ratingCount: 892, verified: true, featured: true,
+    type: 'product', category: 'creative',
+    title: 'Motion Design Pack — After Effects Templates',
+    desc: 'Professional After Effects templates for motion designers. 30+ ready-to-use animations.',
+    creator: 'Mohamed Ismail', creatorInitials: 'MI', creatorColor: '#f65887',
+    creatorAvatar: '/images/explore/banner2.jpeg',
+    banner: '/images/explore/banner2.jpeg',
+    price: 30, currency: 'TND', rating: 4.8, ratingCount: 12, verified: true,
   },
   {
     id: '8',
-    type: 'product', category: 'creative',
-    title: 'Social Media Pack — Arabic Templates',
-    desc: '120 ready-to-post Canva templates in Arabic for Instagram, Facebook, and TikTok.',
-    creator: 'DesignArab', creatorInitials: 'DA', creatorColor: '#f65887',
-    coverGradient: 'linear-gradient(135deg,#ee0979 0%,#ff6a00 100%)',
-    price: 79, currency: 'TND', rating: 4.8, ratingCount: 203,
+    type: 'challenge', category: 'fitness',
+    title: '30-Day Runflow Challenge',
+    desc: 'Build a daily running habit in 30 days. Daily goals, progress tracking, and community support.',
+    creator: 'Bassem Dridi', creatorInitials: 'BD', creatorColor: '#ff9b28',
+    creatorAvatar: '/images/explore/banner7.webp',
+    banner: '/images/explore/banner7.webp',
+    price: 'free', members: 23, verified: true,
   },
   {
     id: '9',
-    type: 'course', category: 'business',
-    title: 'E-Commerce from Scratch',
-    desc: 'Build and launch your online store in Tunisia with Shopify, WooCommerce, or Chabaqa.',
-    creator: 'Rania Sells', creatorInitials: 'RS', creatorColor: '#ff9b28',
-    coverGradient: 'linear-gradient(135deg,#1FA2FF 0%,#12D8FA 50%,#A6FFCB 100%)',
-    price: 199, currency: 'TND', members: 890, rating: 4.7, ratingCount: 167, verified: true, duration: '6 weeks',
+    type: 'event', category: 'business',
+    title: 'Live Workshop: Business Growth in 2025',
+    desc: 'Join Ahmed Hatem for a live workshop on scaling your business in the digital age.',
+    creator: 'Ahmed Hatem', creatorInitials: 'AH', creatorColor: '#8e78fb',
+    creatorAvatar: '/images/explore/banner8.webp',
+    banner: '/images/explore/banner9.webp',
+    price: 'free', date: 'Mar 30, 2025', rating: 4.7, ratingCount: 19, verified: true,
   },
   {
     id: '10',
-    type: 'event', category: 'technology',
-    title: 'TechTunisia Summit 2025',
-    desc: 'Join 500+ tech leaders and startup founders for a full day of talks, workshops, and networking.',
-    creator: 'TechTN Events', creatorInitials: 'TE', creatorColor: '#47c7ea',
-    coverGradient: 'linear-gradient(135deg,#0f2027 0%,#203a43 50%,#2c5364 100%)',
-    price: 35, currency: 'TND', date: 'May 15, 2025', rating: 4.9, ratingCount: 78, verified: true,
+    type: 'course', category: 'language',
+    title: 'تعلم الفرنسية من الصفر — المستوى الأول',
+    desc: 'Complete beginner French course taught in Arabic. Master the basics in 4 weeks.',
+    creator: 'Wyssem Neila', creatorInitials: 'WN', creatorColor: '#47c7ea',
+    creatorAvatar: '/images/explore/banner1.jpeg',
+    banner: '/images/explore/frensh1.png',
+    price: 49, currency: 'TND', members: 45, duration: '4 weeks', verified: false,
   },
   {
     id: '11',
-    type: 'community', category: 'arts',
-    title: 'Tunisian Photographers Collective',
-    desc: 'Share your shots, get critique, and join photo walks across Tunisia with fellow photographers.',
-    creator: 'Lens TN', creatorInitials: 'LT', creatorColor: '#8e78fb',
-    coverGradient: 'linear-gradient(135deg,#232526 0%,#414345 100%)',
-    price: 'free', members: 3200, rating: 4.6, ratingCount: 241,
+    type: 'product', category: 'fitness',
+    title: 'Runflow Training Program Bundle',
+    desc: '12-week structured training program with nutrition guides and weekly live Q&A sessions.',
+    creator: 'Bassem Dridi', creatorInitials: 'BD', creatorColor: '#ff9b28',
+    creatorAvatar: '/images/explore/banner7.webp',
+    banner: '/images/explore/banner6.png',
+    price: 59, currency: 'TND', rating: 4.9, ratingCount: 23, verified: true,
   },
   {
     id: '12',
-    type: 'session', category: 'fitness',
-    title: 'Personal Nutrition Coaching',
-    desc: 'Customized meal plans and weekly check-ins designed for your specific goals and lifestyle.',
-    creator: 'Dr. Amel', creatorInitials: 'AN', creatorColor: '#47c7ea',
-    coverGradient: 'linear-gradient(135deg,#56ab2f 0%,#a8e063 100%)',
-    price: 89, currency: 'TND', duration: '45 min', rating: 4.8, ratingCount: 92, verified: true,
+    type: 'community', category: 'business',
+    title: 'RYEDA — Business Growth Network',
+    desc: 'The RYEDA inner circle. Exclusive content, weekly calls, and direct access to Ahmed Hatem.',
+    creator: 'Ahmed Hatem', creatorInitials: 'AH', creatorColor: '#8e78fb',
+    creatorAvatar: '/images/explore/banner8.webp',
+    banner: '/images/explore/banner9.webp',
+    price: 'free', members: 5, verified: true,
   },
 ]
