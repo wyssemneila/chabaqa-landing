@@ -14,6 +14,15 @@ function fmt(n: number) {
   return n >= 1000 ? `${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}k` : `${n}`
 }
 
+const CTA_LABEL: Record<ContentType, string> = {
+  community: 'Explore',
+  course:    'Start',
+  challenge: 'Join',
+  product:   'Download',
+  session:   'Book',
+  event:     'Register',
+}
+
 // ── Unified card (Featured + Regular share the same component) ─────────────
 function ExploreCard({
   item, featured = false,
@@ -34,7 +43,7 @@ function ExploreCard({
           sizes={featured ? '320px' : '(max-width:640px) 100vw,(max-width:1024px) 50vw,280px'}
         />
 
-        {/* Badge row: Free/price + VIP */}
+        {/* Badge row: Free/price  — VIP only on featured */}
         <div className="absolute top-2.5 end-2.5 flex gap-1.5">
           <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm ${
             item.price === 'free'
@@ -43,11 +52,12 @@ function ExploreCard({
           }`}>
             {item.price === 'free' ? 'Free' : `${item.price} ${item.currency}`}
           </span>
-          {/* VIP gold badge */}
-          <span className="text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm text-white"
-            style={{ background: 'linear-gradient(135deg,#fbbf24,#d97706)' }}>
-            VIP
-          </span>
+          {featured && (
+            <span className="text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm text-white"
+              style={{ background: 'linear-gradient(135deg,#fbbf24,#d97706)' }}>
+              VIP
+            </span>
+          )}
         </div>
 
         {/* Verified */}
@@ -62,7 +72,7 @@ function ExploreCard({
       </div>
 
       {/* ── Body ── */}
-      <div className="flex flex-col flex-1 p-4 gap-2.5">
+      <div className="flex flex-col flex-1 p-4 gap-2">
 
         {/* Title */}
         <h3 className="text-sm font-bold text-[var(--t1)] leading-snug line-clamp-2 group-hover:text-[var(--p)] transition-colors">
@@ -88,13 +98,12 @@ function ExploreCard({
           </span>
         </div>
 
-        {/* Stats row — type badge + members + rating (inside body) */}
-        <div className="flex items-center gap-2 flex-wrap mt-auto">
+        {/* Stats row — type badge + members + rating */}
+        <div className="flex items-center gap-2 flex-wrap">
           <span className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0"
             style={{ background: type.bg, color: type.color, border: `1px solid ${type.border}` }}>
             {type.label}
           </span>
-
           {item.members !== undefined && (
             <span className="flex items-center gap-1 text-[11px] text-[var(--t3)]">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="11" height="11" aria-hidden="true">
@@ -131,6 +140,16 @@ function ExploreCard({
             </span>
           )}
         </div>
+
+        {/* ── CTA button ── */}
+        <a href={`${APP_URL}/explore`}
+          className="mt-1 w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold text-white transition-all hover:opacity-90 hover:-translate-y-[1px]"
+          style={{ background: type.color }}>
+          {CTA_LABEL[item.type]}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="11" height="11" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
       </div>
     </article>
   )
@@ -268,20 +287,22 @@ export default function ExploreClient() {
         <div className="absolute w-[480px] h-[300px] rounded-full blur-[80px] opacity-[0.10] -top-16 -left-24 bg-[var(--p)] pointer-events-none" aria-hidden="true" />
         <div className="absolute w-[300px] h-[300px] rounded-full blur-[80px] opacity-[0.08] top-8 -right-16 bg-[var(--cyan)] pointer-events-none" aria-hidden="true" />
 
-        {/* Headline */}
-        <div className="relative px-6 md:px-10 max-w-6xl mx-auto mb-10">
+        {/* Headline — centered + animated */}
+        <div className="relative px-6 md:px-10 max-w-6xl mx-auto mb-10 text-center">
           <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold mb-5"
-            style={{ background: 'var(--p2)', border: '1.5px solid var(--p3)', color: 'var(--p)' }}>
+            style={{ background: 'var(--p2)', border: '1.5px solid var(--p3)', color: 'var(--p)', animation: 'fadeDown .6s ease both' }}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="12" height="12" aria-hidden="true">
               <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
             </svg>
             {t('badge')}
           </div>
-          <h1 className="text-[clamp(30px,5vw,56px)] font-black text-[var(--t1)] leading-[1.05] tracking-[-0.03em] mb-3 max-w-2xl">
+          <h1 className="text-[clamp(30px,5vw,56px)] font-black text-[var(--t1)] leading-[1.05] tracking-[-0.03em] mb-3 mx-auto max-w-2xl"
+            style={{ animation: 'fadeDown .65s .08s ease both' }}>
             {t('heroTitle1')}{' '}
             <span className="text-[var(--p)]">{t('heroTitle2')}</span>
           </h1>
-          <p className="text-[var(--t3)] text-[clamp(14px,2vw,16px)] leading-relaxed max-w-xl">
+          <p className="text-[var(--t3)] text-[clamp(14px,2vw,16px)] leading-relaxed max-w-xl mx-auto"
+            style={{ animation: 'fadeDown .65s .16s ease both' }}>
             {t('heroSub')}
           </p>
         </div>
@@ -327,10 +348,10 @@ export default function ExploreClient() {
           {/* ── Smart filter block ── */}
           <div className="bg-[var(--white)] border border-[var(--bd)] rounded-2xl p-4 mb-6 shadow-[0_2px_16px_rgba(142,120,251,.07)] space-y-3">
 
-            {/* Row 1: Search + Category dropdown + Sort dropdown */}
-            <div className="flex gap-2.5 flex-wrap sm:flex-nowrap">
-              {/* Search */}
-              <div className="relative flex-1 min-w-0">
+            {/* Row 1: Search (full width mobile) + dropdowns side-by-side below on mobile */}
+            <div className="flex flex-col sm:flex-row gap-2.5">
+              {/* Search — always full width on mobile */}
+              <div className="relative w-full sm:flex-1">
                 <div className="absolute inset-y-0 start-3.5 flex items-center pointer-events-none" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="var(--t3)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="15" height="15">
                     <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -352,41 +373,44 @@ export default function ExploreClient() {
                 )}
               </div>
 
-              {/* Category dropdown (styled as button-select) */}
-              <div className="relative flex-shrink-0">
-                <select
-                  value={activeCategory}
-                  onChange={e => { setActiveCategory(e.target.value); setPage(1) }}
-                  aria-label={t('categoryLabel')}
-                  className="appearance-none h-[42px] ps-4 pe-8 rounded-xl text-sm font-semibold bg-[var(--bg)] text-[var(--t2)] border border-[var(--bd)] focus:outline-none focus:border-[var(--p)] hover:border-[var(--p3)] cursor-pointer transition-colors"
-                >
-                  {CATEGORIES.map(cat => (
-                    <option key={cat} value={cat}>{CATEGORY_LABELS[cat]}</option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 end-2.5 flex items-center" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="13" height="13">
-                    <polyline points="6 9 12 15 18 9"/>
-                  </svg>
+              {/* Dropdowns row — side by side on all screen sizes */}
+              <div className="flex gap-2 sm:gap-2.5 sm:flex-shrink-0">
+                {/* Category */}
+                <div className="relative flex-1 sm:flex-shrink-0 sm:flex-none">
+                  <select
+                    value={activeCategory}
+                    onChange={e => { setActiveCategory(e.target.value); setPage(1) }}
+                    aria-label={t('categoryLabel')}
+                    className="appearance-none w-full h-[42px] ps-3 pe-7 rounded-xl text-sm font-semibold bg-[var(--bg)] text-[var(--t2)] border border-[var(--bd)] focus:outline-none focus:border-[var(--p)] hover:border-[var(--p3)] cursor-pointer transition-colors"
+                  >
+                    {CATEGORIES.map(cat => (
+                      <option key={cat} value={cat}>{CATEGORY_LABELS[cat]}</option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 end-2 flex items-center" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="12" height="12">
+                      <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                  </div>
                 </div>
-              </div>
 
-              {/* Sort dropdown */}
-              <div className="relative flex-shrink-0">
-                <select
-                  value={sort}
-                  onChange={e => { setSort(e.target.value); setPage(1) }}
-                  aria-label={t('sortLabel')}
-                  className="appearance-none h-[42px] ps-4 pe-8 rounded-xl text-sm font-semibold bg-[var(--bg)] text-[var(--t2)] border border-[var(--bd)] focus:outline-none focus:border-[var(--p)] hover:border-[var(--p3)] cursor-pointer transition-colors"
-                >
-                  {SORT_OPTIONS.map(opt => (
-                    <option key={opt.value} value={opt.value}>{opt.label}</option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 end-2.5 flex items-center" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="13" height="13">
-                    <polyline points="6 9 12 15 18 9"/>
-                  </svg>
+                {/* Sort */}
+                <div className="relative flex-1 sm:flex-shrink-0 sm:flex-none">
+                  <select
+                    value={sort}
+                    onChange={e => { setSort(e.target.value); setPage(1) }}
+                    aria-label={t('sortLabel')}
+                    className="appearance-none w-full h-[42px] ps-3 pe-7 rounded-xl text-sm font-semibold bg-[var(--bg)] text-[var(--t2)] border border-[var(--bd)] focus:outline-none focus:border-[var(--p)] hover:border-[var(--p3)] cursor-pointer transition-colors"
+                  >
+                    {SORT_OPTIONS.map(opt => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 end-2 flex items-center" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="12" height="12">
+                      <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
@@ -530,127 +554,129 @@ export default function ExploreClient() {
       </section>
 
       {/* ════════════════════════════════════════════════════════════════
-          SECTION 3 — Creative Promo
+          SECTION 3 — Light Promo
       ════════════════════════════════════════════════════════════════ */}
       <section className="px-6 md:px-10 pb-20" aria-label={t('promoLabel')}>
         <div className="max-w-6xl mx-auto">
-          <div className="relative rounded-3xl overflow-hidden" style={{ background: '#0d0b1e' }}>
+          <div className="relative rounded-3xl overflow-hidden border border-[var(--bd)]" style={{ background: 'var(--section-alt, #f0eefe)' }}>
 
-            {/* Animated gradient blobs */}
+            {/* Soft blob accents */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-              <div className="absolute w-[500px] h-[500px] rounded-full blur-[100px] opacity-30 -top-32 -left-24 bg-[var(--p)]" style={{ animation: 'blobMove 10s ease-in-out infinite' }} />
-              <div className="absolute w-[380px] h-[380px] rounded-full blur-[100px] opacity-25 top-10 right-0 bg-[var(--cyan)]" style={{ animation: 'blobMove 13s ease-in-out infinite', animationDelay: '-4s' }} />
-              <div className="absolute w-[300px] h-[300px] rounded-full blur-[80px] opacity-20 bottom-0 left-1/3 bg-[var(--pink)]" style={{ animation: 'blobMove 9s ease-in-out infinite', animationDelay: '-7s' }} />
-              {/* Subtle grid */}
-              <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px)', backgroundSize: '40px 40px' }} />
-              {/* Animated ring */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full border border-white/[0.06]" style={{ animation: 'ringPulse 6s ease-in-out infinite' }} />
+              <div className="absolute w-[320px] h-[320px] rounded-full blur-[90px] opacity-20 -top-20 -right-16 bg-[var(--p)]" style={{ animation: 'blobMove 12s ease-in-out infinite' }} />
+              <div className="absolute w-[240px] h-[240px] rounded-full blur-[80px] opacity-15 bottom-0 left-10 bg-[var(--cyan)]" style={{ animation: 'blobMove 15s ease-in-out infinite', animationDelay: '-5s' }} />
             </div>
 
-            {/* Content */}
-            <div className="relative px-8 md:px-16 py-16 md:py-20">
+            <div className="relative px-8 md:px-14 py-12 md:py-14">
 
-              {/* Top badge */}
-              <div className="flex justify-center mb-8">
-                <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold text-white border border-white/20 bg-white/10" style={{ animation: 'fadeDown .6s ease both' }}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="13" height="13" aria-hidden="true">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                  </svg>
-                  {t('promoBadge')}
+              {/* Two-column layout: left text + CTA, right features */}
+              <div className="flex flex-col md:flex-row md:items-center gap-10 md:gap-16">
+
+                {/* Left: badge + headline + stats + CTA */}
+                <div className="flex-1 min-w-0" style={{ animation: 'fadeDown .6s ease both' }}>
+                  <div className="inline-flex items-center gap-2 rounded-full px-3.5 py-1 text-xs font-bold mb-5 border"
+                    style={{ color: 'var(--p)', background: 'var(--p2)', borderColor: 'var(--p3)' }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="12" height="12" aria-hidden="true">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                    {t('promoBadge')}
+                  </div>
+
+                  <h2 className="text-[clamp(22px,3.5vw,38px)] font-black text-[var(--t1)] leading-[1.1] tracking-[-0.02em] mb-3">
+                    {t('promoTitle')}
+                  </h2>
+                  <p className="text-sm text-[var(--t2)] leading-relaxed mb-7 max-w-sm">
+                    {t('promoSub')}
+                  </p>
+
+                  {/* Mini stats */}
+                  <div className="flex items-center gap-6 flex-wrap mb-7">
+                    {[
+                      { val: '200+', label: t('statCreators'), color: '#8e78fb' },
+                      { val: '500+', label: t('statCourses'),  color: '#47c7ea' },
+                      { val: '50k+', label: t('statMembers'),  color: '#ff9b28' },
+                    ].map(s => (
+                      <div key={s.label} className="text-center">
+                        <div className="text-2xl font-black leading-none mb-0.5" style={{ color: s.color }}>{s.val}</div>
+                        <div className="text-[10px] text-[var(--t3)] font-medium uppercase tracking-wider">{s.label}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* CTA buttons */}
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <a href={`${APP_URL}/register`}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90 hover:-translate-y-[1px] shadow-[0_4px_16px_rgba(142,120,251,.35)]"
+                      style={{ background: 'var(--p)' }}>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="13" height="13" aria-hidden="true">
+                        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                      </svg>
+                      {t('promoCTA')}
+                    </a>
+                    <a href={`${APP_URL}/explore`}
+                      className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-bold transition-all border hover:border-[var(--p3)] hover:text-[var(--p)] hover:bg-[var(--p2)]"
+                      style={{ color: 'var(--t2)', borderColor: 'var(--bd)', background: 'var(--white)' }}>
+                      {t('promoSecondary')}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="13" height="13" aria-hidden="true">
+                        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                      </svg>
+                    </a>
+                  </div>
                 </div>
-              </div>
 
-              {/* Headline */}
-              <h2 className="text-[clamp(26px,4.5vw,50px)] font-black text-white text-center leading-[1.08] tracking-[-0.02em] mb-5 max-w-3xl mx-auto" style={{ animation: 'fadeDown .6s .1s ease both' }}>
-                {t('promoTitle')}
-              </h2>
-              <p className="text-white/65 text-center max-w-xl mx-auto mb-12 leading-relaxed" style={{ animation: 'fadeDown .6s .2s ease both' }}>
-                {t('promoSub')}
-              </p>
-
-              {/* 4 feature cards */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12" style={{ animation: 'fadeUp .6s .3s ease both' }}>
-                {[
-                  {
-                    icon: (
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="28" height="28" aria-hidden="true">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                      </svg>
-                    ),
-                    color: '#8e78fb', label: t('promoF1'), sub: t('promoF1Sub'),
-                  },
-                  {
-                    icon: (
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="28" height="28" aria-hidden="true">
-                        <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
-                      </svg>
-                    ),
-                    color: '#47c7ea', label: t('promoF2'), sub: t('promoF2Sub'),
-                  },
-                  {
-                    icon: (
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="28" height="28" aria-hidden="true">
-                        <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                      </svg>
-                    ),
-                    color: '#ff9b28', label: t('promoF3'), sub: t('promoF3Sub'),
-                  },
-                  {
-                    icon: (
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="28" height="28" aria-hidden="true">
-                        <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
-                      </svg>
-                    ),
-                    color: '#f65887', label: t('promoF4'), sub: t('promoF4Sub'),
-                  },
-                ].map(f => (
-                  <div key={f.label} className="relative flex flex-col items-start gap-3 p-5 rounded-2xl border border-white/10 bg-white/[0.06] hover:bg-white/[0.1] hover:border-white/20 transition-all group cursor-default">
-                    {/* Icon with glow */}
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
-                      style={{ color: f.color, background: `${f.color}20`, border: `1px solid ${f.color}30` }}>
-                      {f.icon}
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold text-white mb-1">{f.label}</div>
-                      <div className="text-xs text-white/50 leading-relaxed">{f.sub}</div>
-                    </div>
-                    {/* Corner accent */}
-                    <div className="absolute top-3 end-3 w-1.5 h-1.5 rounded-full opacity-60" style={{ background: f.color }} />
+                {/* Right: 4 feature pills */}
+                <div className="flex-shrink-0 w-full md:w-[340px]">
+                  <div className="grid grid-cols-2 gap-3" style={{ animation: 'fadeUp .6s .2s ease both' }}>
+                    {[
+                      {
+                        icon: (
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width="22" height="22" aria-hidden="true">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                          </svg>
+                        ),
+                        color: '#8e78fb', bg: '#f0eefe', label: t('promoF1'), sub: t('promoF1Sub'),
+                      },
+                      {
+                        icon: (
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width="22" height="22" aria-hidden="true">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                          </svg>
+                        ),
+                        color: '#47c7ea', bg: '#e8f9fd', label: t('promoF2'), sub: t('promoF2Sub'),
+                      },
+                      {
+                        icon: (
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width="22" height="22" aria-hidden="true">
+                            <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                          </svg>
+                        ),
+                        color: '#ff9b28', bg: '#fff4e5', label: t('promoF3'), sub: t('promoF3Sub'),
+                      },
+                      {
+                        icon: (
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width="22" height="22" aria-hidden="true">
+                            <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+                          </svg>
+                        ),
+                        color: '#f65887', bg: '#fff0f4', label: t('promoF4'), sub: t('promoF4Sub'),
+                      },
+                    ].map((f, i) => (
+                      <div key={f.label}
+                        className="flex flex-col gap-2.5 p-4 rounded-2xl border border-[var(--bd)] bg-[var(--white)] hover:shadow-md hover:-translate-y-0.5 transition-all cursor-default group"
+                        style={{ animation: `fadeUp .5s ${0.25 + i * 0.07}s ease both` }}>
+                        <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110"
+                          style={{ color: f.color, background: f.bg }}>
+                          {f.icon}
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-[var(--t1)] leading-tight mb-0.5">{f.label}</div>
+                          <div className="text-[10px] text-[var(--t3)] leading-relaxed">{f.sub}</div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
 
-              {/* Stats row */}
-              <div className="flex items-center justify-center gap-8 flex-wrap mb-12" style={{ animation: 'fadeUp .6s .4s ease both' }}>
-                {[
-                  { val: '200+', label: t('statCreators'), color: '#8e78fb' },
-                  { val: '500+', label: t('statCourses'),  color: '#47c7ea' },
-                  { val: '50k+', label: t('statMembers'),  color: '#ff9b28' },
-                ].map(s => (
-                  <div key={s.label} className="text-center">
-                    <div className="text-[clamp(28px,4vw,42px)] font-black mb-1" style={{ color: s.color }}>{s.val}</div>
-                    <div className="text-xs text-white/50 font-medium uppercase tracking-wider">{s.label}</div>
-                  </div>
-                ))}
-              </div>
-
-              {/* CTAs */}
-              <div className="flex items-center justify-center gap-4 flex-wrap" style={{ animation: 'fadeUp .6s .5s ease both' }}>
-                <a href={`${APP_URL}/register`}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl text-sm font-bold text-[#0d0b1e] bg-white hover:bg-white/90 transition-all shadow-[0_8px_32px_rgba(142,120,251,.4)]">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="14" height="14" aria-hidden="true">
-                    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-                  </svg>
-                  {t('promoCTA')}
-                </a>
-                <a href={`${APP_URL}/explore`}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl text-sm font-bold text-white border border-white/25 hover:border-white/50 hover:bg-white/10 transition-all">
-                  {t('promoSecondary')}
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="14" height="14" aria-hidden="true">
-                    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-                  </svg>
-                </a>
               </div>
             </div>
           </div>
