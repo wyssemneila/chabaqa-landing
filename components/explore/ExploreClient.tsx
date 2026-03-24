@@ -141,10 +141,10 @@ function ExploreCard({
           )}
         </div>
 
-        {/* ── CTA button ── */}
+        {/* ── CTA button — always purple, always at bottom ── */}
         <a href={`${APP_URL}/explore`}
-          className="mt-1 w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold text-white transition-all hover:opacity-90 hover:-translate-y-[1px]"
-          style={{ background: type.color }}>
+          className="mt-auto w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold text-white transition-all hover:opacity-90 hover:-translate-y-[1px]"
+          style={{ background: 'var(--p)' }}>
           {CTA_LABEL[item.type]}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="11" height="11" aria-hidden="true">
             <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
@@ -166,7 +166,6 @@ function ExploreListRow({ item }: { item: ExploreItem }) {
           <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${item.price === 'free' ? 'bg-gradient-to-r from-emerald-400 to-teal-500 text-white' : 'bg-black/60 text-white'}`}>
             {item.price === 'free' ? 'Free' : `${item.price} ${item.currency}`}
           </span>
-          <span className="text-[9px] font-bold px-2 py-0.5 rounded-full text-white" style={{ background: 'linear-gradient(135deg,#fbbf24,#d97706)' }}>VIP</span>
         </div>
       </div>
       <div className="flex flex-col flex-1 min-w-0 justify-between py-0.5">
@@ -296,10 +295,18 @@ export default function ExploreClient() {
             </svg>
             {t('badge')}
           </div>
-          <h1 className="text-[clamp(30px,5vw,56px)] font-black text-[var(--t1)] leading-[1.05] tracking-[-0.03em] mb-3 mx-auto max-w-2xl"
+          <h1 className="text-[clamp(22px,4.8vw,52px)] font-black text-[var(--t1)] leading-tight tracking-[-0.03em] mb-4 whitespace-nowrap"
             style={{ animation: 'fadeDown .65s .08s ease both' }}>
             {t('heroTitle1')}{' '}
-            <span className="text-[var(--p)]">{t('heroTitle2')}</span>
+            <span className="relative inline-block">
+              <span className="relative z-10" style={{ color: 'var(--p)' }}>{t('heroTitle2')}</span>
+              {/* Animated curved underline */}
+              <svg className="absolute -bottom-1 left-0 w-full overflow-visible" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M0 7 Q25 2 50 6 Q75 10 100 5" fill="none" stroke="var(--p)" strokeWidth="3"
+                  strokeLinecap="round" pathLength="1"
+                  style={{ strokeDasharray: 1, strokeDashoffset: 1, animation: 'drawLine 0.9s 0.65s ease-out forwards' }}/>
+              </svg>
+            </span>
           </h1>
           <p className="text-[var(--t3)] text-[clamp(14px,2vw,16px)] leading-relaxed max-w-xl mx-auto"
             style={{ animation: 'fadeDown .65s .16s ease both' }}>
@@ -346,7 +353,7 @@ export default function ExploreClient() {
         <div className="max-w-6xl mx-auto">
 
           {/* ── Smart filter block ── */}
-          <div className="bg-[var(--white)] border border-[var(--bd)] rounded-2xl p-4 mb-6 shadow-[0_2px_16px_rgba(142,120,251,.07)] space-y-3">
+          <div className="bg-[var(--white)] border border-[var(--bd)] rounded-2xl p-3 mb-6 shadow-[0_2px_16px_rgba(142,120,251,.07)] space-y-2.5">
 
             {/* Row 1: Search (full width mobile) + dropdowns side-by-side below on mobile */}
             <div className="flex flex-col sm:flex-row gap-2.5">
@@ -361,7 +368,7 @@ export default function ExploreClient() {
                   type="search" value={search}
                   onChange={e => { setSearch(e.target.value); setPage(1) }}
                   placeholder={t('searchPlaceholder')} aria-label={t('searchLabel')}
-                  className="w-full ps-10 pe-10 py-2.5 rounded-xl bg-[var(--bg)] border border-[var(--bd)] focus:border-[var(--p)] focus:outline-none text-[var(--t1)] placeholder:text-[var(--t3)] text-sm transition-colors"
+                  className="w-full ps-9 pe-9 py-2 rounded-xl bg-[var(--bg)] border border-[var(--bd)] focus:border-[var(--p)] focus:outline-none text-[var(--t1)] placeholder:text-[var(--t3)] text-xs sm:text-sm transition-colors"
                 />
                 {search && (
                   <button onClick={() => { setSearch(''); setPage(1) }} aria-label={t('clearSearch')}
@@ -381,7 +388,7 @@ export default function ExploreClient() {
                     value={activeCategory}
                     onChange={e => { setActiveCategory(e.target.value); setPage(1) }}
                     aria-label={t('categoryLabel')}
-                    className="appearance-none w-full h-[42px] ps-3 pe-7 rounded-xl text-sm font-semibold bg-[var(--bg)] text-[var(--t2)] border border-[var(--bd)] focus:outline-none focus:border-[var(--p)] hover:border-[var(--p3)] cursor-pointer transition-colors"
+                    className="appearance-none w-full h-9 ps-2.5 pe-7 rounded-xl text-xs font-semibold bg-[var(--bg)] text-[var(--t2)] border border-[var(--bd)] focus:outline-none focus:border-[var(--p)] hover:border-[var(--p3)] cursor-pointer transition-colors"
                   >
                     {CATEGORIES.map(cat => (
                       <option key={cat} value={cat}>{CATEGORY_LABELS[cat]}</option>
@@ -400,7 +407,7 @@ export default function ExploreClient() {
                     value={sort}
                     onChange={e => { setSort(e.target.value); setPage(1) }}
                     aria-label={t('sortLabel')}
-                    className="appearance-none w-full h-[42px] ps-3 pe-7 rounded-xl text-sm font-semibold bg-[var(--bg)] text-[var(--t2)] border border-[var(--bd)] focus:outline-none focus:border-[var(--p)] hover:border-[var(--p3)] cursor-pointer transition-colors"
+                    className="appearance-none w-full h-9 ps-2.5 pe-7 rounded-xl text-xs font-semibold bg-[var(--bg)] text-[var(--t2)] border border-[var(--bd)] focus:outline-none focus:border-[var(--p)] hover:border-[var(--p3)] cursor-pointer transition-colors"
                   >
                     {SORT_OPTIONS.map(opt => (
                       <option key={opt.value} value={opt.value}>{opt.label}</option>
