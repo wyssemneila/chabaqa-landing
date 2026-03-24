@@ -25,7 +25,7 @@ export default function FAQ() {
               <div key={i} role="listitem" className={`rounded-2xl border transition-all overflow-hidden ${isOpen ? 'border-[var(--p)] shadow-[0_4px_24px_rgba(142,120,251,.15)]' : 'border-[var(--bd)] hover:border-[var(--p3)]'}`}>
                 <button
                   id={questionId}
-                  className={`w-full flex items-center justify-between gap-4 px-6 py-5 text-start font-semibold text-sm transition-colors ${isOpen ? 'bg-[var(--p)] text-white' : 'bg-[var(--white)] text-[var(--t1)] hover:bg-[var(--p2)]'}`}
+                  className={`w-full flex items-center justify-between gap-4 px-6 py-5 text-start font-semibold text-[15px] transition-colors ${isOpen ? 'bg-[var(--p)] text-white' : 'bg-[var(--white)] text-[var(--t1)] hover:bg-[var(--p2)]'}`}
                   onClick={() => setOpen(isOpen ? null : i)}
                   aria-expanded={isOpen}
                   aria-controls={answerId}
@@ -39,7 +39,7 @@ export default function FAQ() {
                   </span>
                 </button>
                 <div id={answerId} role="region" aria-labelledby={questionId} hidden={!isOpen}
-                  className="px-6 py-5 text-sm text-[var(--t3)] leading-relaxed bg-[var(--white)]">
+                  className="px-6 py-5 text-[15px] text-[var(--t3)] leading-relaxed bg-[var(--white)]">
                   {faq.a}
                 </div>
               </div>

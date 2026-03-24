@@ -1,13 +1,14 @@
 'use client'
 import { useTranslations } from 'next-intl'
+import { APP_URL } from '@/lib/config'
 
 export default function About() {
   const t     = useTranslations('about')
   const pills = t.raw('pills') as string[]
 
   return (
-    <div className="py-24 px-6 md:px-10 bg-[var(--bg)]">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+    <section className="py-24 px-6 md:px-10 bg-[var(--bg)]" id="about" aria-label="About Chabaqa">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         <div className="reveal-left">
           <div className="rounded-2xl overflow-hidden border border-[var(--bd)] shadow-[0_8px_40px_rgba(142,120,251,.12)] aspect-video bg-[var(--white)]">
             <iframe
@@ -29,12 +30,12 @@ export default function About() {
               </li>
             ))}
           </ul>
-          <a href="https://app.chabaqa.io/register" className="inline-flex items-center gap-2 px-7 py-4 rounded-2xl text-sm font-bold text-white bg-[var(--p)] hover:bg-[#7a64f0] hover:-translate-y-[2px] transition-all shadow-[0_8px_24px_rgba(142,120,251,.35)]">
+          <a href={`${APP_URL}/register`} className="inline-flex items-center gap-2 px-7 py-4 rounded-2xl text-sm font-bold text-white bg-[var(--p)] hover:bg-[var(--p-dark)] hover:-translate-y-[2px] transition-all shadow-[0_8px_24px_rgba(142,120,251,.35)]">
             <svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="16" height="16" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             {t('cta')}
           </a>
         </div>
       </div>
-    </div>
+    </section>
   )
 }

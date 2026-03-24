@@ -1,9 +1,11 @@
 'use client'
+import Image from 'next/image'
 import { useTranslations } from 'next-intl'
+import { CONTACT_EMAIL } from '@/lib/config'
 
 const FOOTER_HREFS: string[][] = [
   ['#features', '#pricing', '#features', '#features', '#features'],
-  ['#', '#', '#', 'mailto:hello@chabaqa.io'],
+  ['#', '#', '#', `mailto:${CONTACT_EMAIL}`],
   ['#', '#', '#'],
 ]
 
@@ -18,13 +20,8 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <a href="#" aria-label="Chabaqa — go to top" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-xl bg-[var(--p)] flex items-center justify-center">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18" aria-hidden="true">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-                </svg>
-              </div>
-              <span className="text-white font-extrabold text-lg">Chabaqa</span>
+            <a href="/" aria-label="Chabaqa — go to homepage" className="flex items-center mb-4">
+              <Image src="/images/logo.svg" alt="Chabaqa" width={120} height={32} className="h-8 w-auto brightness-0 invert" />
             </a>
             <p className="text-white/50 text-sm leading-relaxed mb-6">{t('tagline')}</p>
             <div className="flex gap-3">

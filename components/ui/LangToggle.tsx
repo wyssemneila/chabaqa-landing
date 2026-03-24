@@ -1,23 +1,13 @@
 'use client'
 import { useLocale } from 'next-intl'
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 export default function LangToggle() {
-  const locale  = useLocale()
-  const router  = useRouter()
-  const pathname = usePathname()
+  const locale = useLocale()
+  const router = useRouter()
 
   function toggle() {
-    const next = locale === 'en' ? 'ar' : 'en'
-    // Replace locale prefix in path
-    const segments = pathname.split('/')
-    if (segments[1] === 'ar' || segments[1] === 'en') {
-      segments[1] = next === 'en' ? '' : next
-    } else {
-      segments.splice(1, 0, next === 'en' ? '' : next)
-    }
-    const newPath = segments.join('/').replace('//', '/') || '/'
-    router.push(next === 'en' ? '/' : '/ar')
+    router.push(locale === 'en' ? '/ar' : '/en')
   }
 
   return (

@@ -13,9 +13,6 @@ import RevealProvider from '@/components/ui/RevealProvider'
 export default function Home() {
   return (
     <>
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-[var(--p)] focus:text-white focus:rounded-lg">
-        Skip to main content
-      </a>
       <Navbar />
       <main id="main-content">
         <RevealProvider />

@@ -1,7 +1,9 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import { useTranslations, useLocale } from 'next-intl'
 import { HERO_PILLS } from '@/lib/data'
+import { APP_URL } from '@/lib/config'
 
 function PillPopup({ title, desc, image, side }: { title: string; desc: string; image: string; side: 'left' | 'right' }) {
   return (
@@ -12,9 +14,8 @@ function PillPopup({ title, desc, image, side }: { title: string; desc: string; 
         side === 'right' ? 'left-[calc(100%+12px)]' : 'right-[calc(100%+12px)]'
       }`}
     >
-      <div style={{ aspectRatio: '16/9', width: '100%', overflow: 'hidden' }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={image} alt={title} className="w-full h-full object-cover block" />
+      <div style={{ aspectRatio: '16/9', width: '100%', overflow: 'hidden', position: 'relative' }}>
+        <Image src={image} alt={title} fill className="object-cover" sizes="300px" />
       </div>
       <div className="p-3 pb-4 px-4">
         <div className="text-[13px] font-extrabold text-[var(--t1)] mb-1">{title}</div>
@@ -83,7 +84,7 @@ export default function Hero() {
   const STAT_COLORS = ['var(--p)', 'var(--orange)', 'var(--cyan)', 'var(--pink)']
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 md:px-12 pt-28 pb-20 overflow-hidden" aria-label="Hero">
+    <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 md:px-10 pt-28 pb-20 overflow-hidden" aria-label="Hero">
       {/* Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div className="absolute inset-0 opacity-60" style={{ backgroundImage: 'linear-gradient(var(--bd) 1px,transparent 1px),linear-gradient(90deg,var(--bd) 1px,transparent 1px)', backgroundSize: '52px 52px', maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%)' }} />
@@ -104,7 +105,7 @@ export default function Hero() {
           const pillT    = pillsRaw[pill.id] ?? { label: pill.label, title: pill.label, desc: '' }
           const isLeft   = pill.position.left !== undefined
           const isActive = activePill === pill.id
-          const popupSide = dir === 'rtl' ? (isLeft ? 'left' : 'right') : (isLeft ? 'right' : 'left')
+          const popupSide = isLeft ? 'right' : 'left'
           return (
             <button
               key={pill.id}
@@ -128,9 +129,11 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-[2] max-w-[820px] w-full">
-        <div className="inline-flex items-center gap-2 bg-[var(--white)] border border-[var(--bd)] rounded-full px-4 py-[6px] text-xs font-semibold text-[var(--t2)] mb-7 shadow-[0_2px_12px_rgba(142,120,251,.1)]" style={{ animation: 'fadeDown .7s ease both' }}>
-          <div className="w-6 h-6 rounded-full bg-[var(--p)] text-white flex items-center justify-center text-[11px] font-extrabold" aria-hidden="true">✦</div>
-          {t('badge')}
+        <div className="relative inline-flex items-center gap-2 rounded-full px-4 py-[6px] text-xs font-semibold mb-7 overflow-hidden" style={{ animation: 'fadeDown .7s ease both', background: 'linear-gradient(135deg, var(--p2) 0%, #ede9ff 50%, var(--p2) 100%)', border: '1.5px solid var(--p3)', color: 'var(--p)' }}>
+          {/* shimmer sweep */}
+          <span className="absolute inset-0 -translate-x-full" style={{ background: 'linear-gradient(105deg, transparent 40%, rgba(142,120,251,.35) 50%, transparent 60%)', animation: 'badgeShimmer 2.2s ease-in-out infinite' }} aria-hidden="true" />
+          <div className="relative w-6 h-6 rounded-full bg-[var(--p)] text-white flex items-center justify-center text-[11px] font-extrabold" aria-hidden="true">✦</div>
+          <span className="relative font-bold tracking-wide">{t('badge')}</span>
         </div>
 
         <h1 className="text-[clamp(46px,7vw,88px)] font-black text-[var(--t1)] leading-[1.05] tracking-[-0.04em] mb-3" style={{ animation: 'fadeDown .7s .1s ease both' }}>
@@ -151,11 +154,11 @@ export default function Hero() {
         </p>
 
         <div className="flex items-center gap-3 justify-center flex-wrap mb-12" style={{ animation: 'fadeDown .7s .3s ease both' }}>
-          <a href="https://app.chabaqa.io/register" className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl text-[15px] font-bold text-white bg-[var(--p)] hover:bg-[#7a64f0] hover:-translate-y-[3px] transition-all shadow-[0_8px_30px_rgba(142,120,251,.35)] hover:shadow-[0_14px_40px_rgba(142,120,251,.45)]">
+          <a href={`${APP_URL}/register`} className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl text-[15px] font-bold text-white bg-[var(--p)] hover:bg-[#7a64f0] hover:-translate-y-[3px] transition-all shadow-[0_8px_30px_rgba(142,120,251,.35)] hover:shadow-[0_14px_40px_rgba(142,120,251,.45)]">
             <svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="16" height="16" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             {t('ctaPrimary')}
           </a>
-          <button type="button" className="inline-flex items-center gap-2 px-7 py-4 rounded-[14px] text-[15px] font-semibold text-[var(--t2)] bg-[var(--white)] border-2 border-[var(--bd)] hover:border-[var(--p3)] hover:text-[var(--p)] hover:bg-[var(--p2)] transition-all">
+          <button type="button" onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })} className="inline-flex items-center gap-2 px-7 py-4 rounded-2xl text-[15px] font-semibold text-[var(--t2)] bg-[var(--white)] border-2 border-[var(--bd)] hover:border-[var(--p3)] hover:text-[var(--p)] hover:bg-[var(--p2)] transition-all">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/></svg>
             {t('ctaSecondary')}
           </button>
@@ -171,11 +174,11 @@ export default function Hero() {
         </div>
 
         {/* Stats */}
-        <div className="flex items-center bg-[var(--white)] border border-[var(--bd)] rounded-2xl overflow-hidden mt-12 max-w-[680px] w-full mx-auto shadow-[0_4px_24px_rgba(142,120,251,.1)]" style={{ animation: 'fadeUp .7s .5s ease both' }} role="list" aria-label="Key stats">
+        <div className="flex items-center bg-[var(--white)] border border-[var(--bd)] rounded-2xl overflow-hidden mt-8 md:mt-12 max-w-[680px] w-full mx-auto shadow-[0_4px_24px_rgba(142,120,251,.1)]" style={{ animation: 'fadeUp .7s .5s ease both' }} role="list" aria-label="Key stats">
           {stats.map((s, i) => (
-            <div key={s.label} className="flex-1 py-4 px-5 text-center border-r border-[var(--bd)] last:border-r-0" role="listitem">
-              <div className="text-[22px] font-black leading-none" style={{ color: STAT_COLORS[i] }}>{s.val}</div>
-              <div className="text-[10px] font-semibold uppercase tracking-[.06em] text-[var(--t3)] mt-1">{s.label}</div>
+            <div key={s.label} className="flex-1 py-3 px-3 md:py-4 md:px-5 text-center border-r border-[var(--bd)] last:border-r-0" role="listitem">
+              <div className="text-[16px] md:text-[22px] font-black leading-none" style={{ color: STAT_COLORS[i] }}>{s.val}</div>
+              <div className="text-[10px] md:text-[11px] font-semibold uppercase tracking-[.06em] text-[var(--t3)] mt-1">{s.label}</div>
             </div>
           ))}
         </div>

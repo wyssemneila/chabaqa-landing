@@ -4,11 +4,14 @@
     "how": "How it works",
     "pricing": "Pricing",
     "faq": "FAQ",
+    "explore": "Explore",
+    "blog": "Blog",
+    "about": "About us",
     "login": "Log in",
     "start": "Start for free"
   },
   "hero": {
-    "badge": "For Creators, By Creators — MENA & Tunisia",
+    "badge": "For Creators, By Creators",
     "title1": "Turn your",
     "passion": "passion",
     "title2": "into a",

@@ -1,3 +1,24 @@
+// ── Brand colors ──
+export const COLORS = {
+  p:      '#8e78fb',
+  p2:     '#ede9ff',
+  p3:     '#c4b8fd',
+  orange: '#ff9b28',
+  o2:     '#fff3e4',
+  cyan:   '#47c7ea',
+  c2:     '#e4f8fd',
+  pink:   '#f65887',
+  pk2:    '#ffe4ee',
+  white:  '#ffffff',
+  bg:     '#f7f7fe',
+  t1:     '#1a1730',
+  t2:     '#46426a',
+  t3:     '#9590b8',
+}
+
+// ── Hero typed words ──
+export const TYPED_WORDS = ['business', 'community', 'courses', 'income', 'brand']
+
 // ── Hero pill features ──
 export const HERO_PILLS: HeroPill[] = [
   {
@@ -74,6 +95,14 @@ export const HERO_PILLS: HeroPill[] = [
   },
 ]
 
+// ── About pills ──
+export const ABOUT_PILLS = [
+  'No code required',
+  'Built for MENA creators',
+  'Arabic & French support',
+  'Free to start',
+]
+
 // ── Features tabs ──
 export const FEATURES: Feature[] = [
   { id: 'community',   name: 'Community',          desc: 'Build & engage your audience daily',              iconBg: 'var(--p2)',  iconBorder: 'var(--p3)',   iconColor: 'var(--p)',      url: 'chabaqa.io/community'  },
@@ -138,6 +167,23 @@ export const PLANS: Plan[] = [
   },
 ]
 
+// ── FAQ ──
+export const FAQS: FAQ[] = [
+  { q: 'What makes Chabaqa different?',                            a: 'Chabaqa is the only all-in-one platform built specifically for creators in Tunisia and MENA. Courses, challenges, coaching, events — one dashboard, one payout, local support in Arabic and French.' },
+  { q: 'Is Chabaqa free to start?',                               a: 'Yes. The Starter plan is free with no credit card required. Every paid plan also includes a 7-day free trial.' },
+  { q: 'What is the difference between Courses and Challenges?',  a: 'Courses are self-paced learning with chapters and videos. Challenges are time-bound programs designed to maximize engagement and community participation.' },
+  { q: "Can I use Chabaqa if I'm in Tunisia or MENA?",            a: 'Absolutely — Chabaqa was built for creators in Tunisia and across MENA. Pricing is in TND, support is in Arabic and French.' },
+  { q: 'How do I get paid?',                                       a: "Revenue is collected through Chabaqa's secure checkout. Payouts are managed from your creator dashboard with transparent transaction fees (2.9%–7.9% depending on plan)." },
+  { q: 'Is there a money-back guarantee?',                         a: 'Yes — 30-day money-back guarantee on all paid plans, no questions asked.' },
+]
+
+// ── Footer links ──
+export const FOOTER_LINKS = {
+  Product: ['Features', 'Pricing', 'Community', 'Courses', 'Challenges'],
+  Company: ['About', 'Blog', 'Careers', 'Contact'],
+  Legal:   ['Terms of Service', 'Privacy Policy', 'Cookies'],
+}
+
 // ── Types ──
 export interface HeroPill {
   id: string; label: string
@@ -153,3 +199,4 @@ export interface Feature {
 }
 export interface Video  { id: string; num: string; tag: string; dur: string; title: string; desc: string }
 export interface Plan   { badge: string; name: string; desc: string; monthlyPrice: number; yearlyPrice: number; price: string; period: string; fee: string; featured: boolean; features: string[] }
+export interface FAQ    { q: string; a: string }

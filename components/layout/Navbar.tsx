@@ -1,8 +1,10 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslations } from 'next-intl'
+import Image from 'next/image'
 import ThemeToggle from '@/components/ui/ThemeToggle'
 import LangToggle  from '@/components/ui/LangToggle'
+import { APP_URL } from '@/lib/config'
 
 export default function Navbar() {
   const t = useTranslations('nav')
@@ -13,9 +15,9 @@ export default function Navbar() {
 
   const NAV_LINKS = [
     { href: '#features', label: t('features') },
-    { href: '#how',      label: t('how')      },
     { href: '#pricing',  label: t('pricing')  },
-    { href: '#faq',      label: t('faq')      },
+    { href: '/explore',  label: t('explore')  },
+    { href: '/blog',     label: t('blog')     },
   ]
 
   useEffect(() => {
@@ -41,19 +43,18 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
+    const onMouseDown = (e: MouseEvent) => {
       if (menuOpen && menuRef.current && !menuRef.current.contains(e.target as Node))
         setMenuOpen(false)
     }
-    document.addEventListener('mousedown', handler)
-    return () => document.removeEventListener('mousedown', handler)
+    const onKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuOpen(false) }
+    document.addEventListener('mousedown', onMouseDown)
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('mousedown', onMouseDown)
+      document.removeEventListener('keydown', onKeyDown)
+    }
   }, [menuOpen])
-
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuOpen(false) }
-    document.addEventListener('keydown', handler)
-    return () => document.removeEventListener('keydown', handler)
-  }, [])
 
   return (
     <div ref={menuRef}>
@@ -67,9 +68,8 @@ export default function Navbar() {
         }`}
       >
         {/* Logo */}
-        <a href="#" aria-label="Chabaqa — go to top" className="flex-shrink-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/logo.svg" alt="Chabaqa" className="h-7 w-auto" />
+        <a href="/" aria-label="Chabaqa — go to homepage" className="flex-shrink-0">
+          <Image src="/images/logo.svg" alt="Chabaqa" width={112} height={28} className="h-7 w-auto" />
         </a>
 
         {/* Desktop links */}
@@ -95,14 +95,14 @@ export default function Navbar() {
           <ThemeToggle />
           <LangToggle />
           <a
-            href="https://app.chabaqa.io/login"
+            href="{`${APP_URL}/login`}"
             className="hidden md:inline-flex items-center h-10 px-4 rounded-xl text-sm font-semibold text-[var(--t2)] border border-[var(--bd)] bg-[var(--white)] hover:border-[var(--p3)] hover:text-[var(--p)] transition-colors"
           >
             {t('login')}
           </a>
           <a
-            href="https://app.chabaqa.io/register"
-            className="hidden md:inline-flex items-center gap-2 h-10 px-4 rounded-xl text-sm font-semibold text-white bg-[var(--p)] hover:bg-[#7a64f0] transition-colors shadow-[0_4px_16px_rgba(142,120,251,.35)]"
+            href="{`${APP_URL}/register`}"
+            className="hidden md:inline-flex items-center gap-2 h-10 px-4 rounded-xl text-sm font-semibold text-white bg-[var(--p)] hover:bg-[var(--p-dark)] transition-colors shadow-[0_4px_16px_rgba(142,120,251,.35)]"
           >
             {t('start')}
             <svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="14" height="14" aria-hidden="true">
@@ -156,9 +156,9 @@ export default function Navbar() {
           </a>
         ))}
         <div className="flex gap-2 mt-2 pt-2 border-t border-[var(--bd)]">
-          <a href="https://app.chabaqa.io/login"    onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}
+          <a href="{`${APP_URL}/login`}"    onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}
             className="flex-1 flex items-center justify-center h-10 rounded-xl text-sm font-semibold text-[var(--t2)] border border-[var(--bd)] bg-[var(--white)]">{t('login')}</a>
-          <a href="https://app.chabaqa.io/register" onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}
+          <a href="{`${APP_URL}/register`}" onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}
             className="flex-1 flex items-center justify-center h-10 rounded-xl text-sm font-semibold text-white bg-[var(--p)]">{t('start')} →</a>
         </div>
       </div>
