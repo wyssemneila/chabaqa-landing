@@ -79,7 +79,7 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               role="menuitem"
-              className={`px-4 py-2 rounded-lg text-sm font-600 transition-colors ${
+              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${
                 activeSection === link.href.replace('#', '')
                   ? 'text-[var(--p)] bg-[var(--p2)]'
                   : 'text-[var(--t2)] hover:text-[var(--t1)] hover:bg-[var(--p2)]'
@@ -95,13 +95,13 @@ export default function Navbar() {
           <ThemeToggle />
           <LangToggle />
           <a
-            href="{`${APP_URL}/login`}"
+            href={`${APP_URL}/login`}
             className="hidden md:inline-flex items-center h-10 px-4 rounded-xl text-sm font-semibold text-[var(--t2)] border border-[var(--bd)] bg-[var(--white)] hover:border-[var(--p3)] hover:text-[var(--p)] transition-colors"
           >
             {t('login')}
           </a>
           <a
-            href="{`${APP_URL}/register`}"
+            href={`${APP_URL}/register`}
             className="hidden md:inline-flex items-center gap-2 h-10 px-4 rounded-xl text-sm font-semibold text-white bg-[var(--p)] hover:bg-[var(--p-dark)] transition-colors shadow-[0_4px_16px_rgba(142,120,251,.35)]"
           >
             {t('start')}
@@ -156,10 +156,10 @@ export default function Navbar() {
           </a>
         ))}
         <div className="flex gap-2 mt-2 pt-2 border-t border-[var(--bd)]">
-          <a href="{`${APP_URL}/login`}"    onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}
+          <a href={`${APP_URL}/login`}    onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}
             className="flex-1 flex items-center justify-center h-10 rounded-xl text-sm font-semibold text-[var(--t2)] border border-[var(--bd)] bg-[var(--white)]">{t('login')}</a>
-          <a href="{`${APP_URL}/register`}" onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}
-            className="flex-1 flex items-center justify-center h-10 rounded-xl text-sm font-semibold text-white bg-[var(--p)]">{t('start')} →</a>
+          <a href={`${APP_URL}/register`} onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}
+            className="flex-1 flex items-center justify-center h-10 rounded-xl text-sm font-semibold text-white bg-[var(--p)]">{t('start')}</a>
         </div>
       </div>
     </div>

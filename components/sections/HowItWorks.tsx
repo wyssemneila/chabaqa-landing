@@ -9,7 +9,7 @@ export default function HowItWorks() {
   return (
     <section className="py-24 px-6 md:px-10 bg-[var(--bg)]" id="how" aria-label="How it works">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16 section-center reveal">
+        <div className="text-center mb-16 reveal">
           <div className="text-xs font-bold uppercase tracking-[.1em] text-[var(--p)] mb-3">{t('eyebrow')}</div>
           <h2 className="text-[clamp(28px,4vw,44px)] font-black text-[var(--t1)] mb-4">{t('title')}</h2>
           <p className="text-[var(--t3)] max-w-xl mx-auto">{t('sub')}</p>

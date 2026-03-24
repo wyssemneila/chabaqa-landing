@@ -19,7 +19,7 @@ function PillPopup({ title, desc, image, side }: { title: string; desc: string; 
       </div>
       <div className="p-3 pb-4 px-4">
         <div className="text-[13px] font-extrabold text-[var(--t1)] mb-1">{title}</div>
-        <div className="text-[11px] text-[var(--t3)] leading-relaxed whitespace-normal">{desc}</div>
+        <div className="text-xs text-[var(--t3)] leading-relaxed whitespace-normal">{desc}</div>
       </div>
     </div>
   )
