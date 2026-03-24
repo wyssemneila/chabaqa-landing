@@ -96,18 +96,15 @@ export default function Navbar() {
           <LangToggle />
           <a
             href={`${APP_URL}/login`}
-            className="hidden md:inline-flex items-center h-10 px-4 rounded-xl text-sm font-semibold text-[var(--t2)] border border-[var(--bd)] bg-[var(--white)] hover:border-[var(--p3)] hover:text-[var(--p)] transition-colors"
+            className="hidden md:inline-flex items-center h-8 px-3 rounded-lg text-xs font-semibold text-[var(--t2)] border border-[var(--bd)] bg-[var(--white)] hover:border-[var(--p3)] hover:text-[var(--p)] transition-colors"
           >
             {t('login')}
           </a>
           <a
             href={`${APP_URL}/register`}
-            className="hidden md:inline-flex items-center gap-2 h-10 px-4 rounded-xl text-sm font-semibold text-white bg-[var(--p)] hover:bg-[var(--p-dark)] transition-colors shadow-[0_4px_16px_rgba(142,120,251,.35)]"
+            className="hidden md:inline-flex items-center h-8 px-3 rounded-lg text-xs font-semibold text-white bg-[var(--p)] hover:bg-[var(--p-dark)] transition-colors shadow-[0_3px_12px_rgba(142,120,251,.35)]"
           >
             {t('start')}
-            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="14" height="14" aria-hidden="true">
-              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-            </svg>
           </a>
           {/* Burger */}
           <button

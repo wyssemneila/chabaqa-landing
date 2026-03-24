@@ -184,6 +184,13 @@
     "promoF3": "Earn income",
     "promoF4": "Run challenges",
     "promoCTA": "Start for free — no card needed",
-    "promoSecondary": "Explore more creators"
+    "promoSecondary": "Explore more creators",
+    "promoF1Sub": "Build thriving communities around your expertise",
+    "promoF2Sub": "Create and sell courses, challenges & digital products",
+    "promoF3Sub": "Monetize your audience with multiple revenue streams",
+    "promoF4Sub": "Run competitions and gamify your community",
+    "statCreators": "Creators",
+    "statCourses": "Courses & Products",
+    "statMembers": "Members"
   }
 }
