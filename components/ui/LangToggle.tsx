@@ -8,11 +8,11 @@ export default function LangToggle() {
   const pathname = usePathname()
 
   function toggle() {
-    if (locale === 'en') {
-      router.push('/ar' + pathname)
-    } else {
-      router.push(pathname.replace(/^\/ar/, '') || '/')
-    }
+    // localePrefix: 'always' → paths are /en/... and /ar/...
+    // Strip current locale prefix, then prepend target locale
+    const pathWithoutLocale = pathname.replace(new RegExp(`^/${locale}`), '') || '/'
+    const target = locale === 'en' ? 'ar' : 'en'
+    router.push(`/${target}${pathWithoutLocale}`)
   }
 
   return (
