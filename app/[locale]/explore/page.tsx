@@ -1,4 +1,7 @@
 import type { Metadata } from 'next'
+import Navbar from '@/components/layout/Navbar'
+import Footer from '@/components/layout/Footer'
+import RevealProvider from '@/components/ui/RevealProvider'
 import ExploreClient from '@/components/explore/ExploreClient'
 
 export const metadata: Metadata = {
@@ -7,5 +10,14 @@ export const metadata: Metadata = {
 }
 
 export default function ExplorePage() {
-  return <ExploreClient />
+  return (
+    <>
+      <Navbar />
+      <main id="main-content">
+        <RevealProvider />
+        <ExploreClient />
+      </main>
+      <Footer />
+    </>
+  )
 }
