@@ -1,0 +1,167 @@
+'use client'
+import { useState, useRef, useEffect } from 'react'
+import { useTranslations, useLocale } from 'next-intl'
+import { VIDEOS } from '@/lib/data'
+
+const CARD_W = 318
+
+const TAG_STYLES: Record<string, { bg: string; border: string; color: string }> = {
+  'Getting Started': { bg: 'var(--p2)',  border: 'var(--p3)',  color: 'var(--p)'      },
+  'Courses':         { bg: 'var(--o2)',  border: '#fde5bb',    color: 'var(--orange)' },
+  'Challenges':      { bg: 'var(--c2)',  border: '#a5f3fc',    color: 'var(--cyan)'   },
+  'Coaching':        { bg: 'var(--o2)',  border: '#fde5bb',    color: 'var(--orange)' },
+  'Products':        { bg: 'var(--pk2)', border: '#fda4af',    color: 'var(--pink)'   },
+  'Analytics':       { bg: 'var(--p2)',  border: 'var(--p3)',  color: 'var(--p)'      },
+}
+
+export default function Videos() {
+  const t      = useTranslations('videos')
+  const locale = useLocale()
+  const items  = t.raw('items') as { num: string; tag: string; title: string; desc: string }[]
+
+  const [cur,   setCur]   = useState(0)
+  const [modal, setModal] = useState<{ id: string; title: string } | null>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const isDown   = useRef(false)
+  const startX   = useRef(0)
+  const scrollL  = useRef(0)
+
+  function scrollTo(i: number) {
+    const idx = Math.max(0, Math.min(i, VIDEOS.length - 1))
+    setCur(idx)
+    trackRef.current?.scrollTo({ left: idx * CARD_W, behavior: 'smooth' })
+  }
+
+  function openModal(id: string, title: string) { setModal({ id, title }); document.body.style.overflow = 'hidden' }
+  function closeModal() { setModal(null); document.body.style.overflow = '' }
+
+  const onMouseDown  = (e: React.MouseEvent) => { isDown.current = true; startX.current = e.pageX - (trackRef.current?.offsetLeft ?? 0); scrollL.current = trackRef.current?.scrollLeft ?? 0 }
+  const onMouseLeave = () => { isDown.current = false }
+  const onMouseUp    = () => { isDown.current = false }
+  const onMouseMove  = (e: React.MouseEvent) => {
+    if (!isDown.current) return
+    e.preventDefault()
+    const x = e.pageX - (trackRef.current?.offsetLeft ?? 0)
+    if (trackRef.current) trackRef.current.scrollLeft = scrollL.current - (x - startX.current) * 1.5
+  }
+  const onScroll = () => { if (!trackRef.current) return; const i = Math.round(trackRef.current.scrollLeft / CARD_W); if (i !== cur) setCur(i) }
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') closeModal() }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [])
+
+  const total = locale === 'ar' ? '٠٦' : '06'
+
+  return (
+    <>
+      <section className="py-24 bg-[var(--white)]">
+        {/* Header */}
+        <div className="max-w-6xl mx-auto px-6 md:px-10 mb-10">
+          <div className="flex items-end justify-between gap-4 reveal">
+            <div>
+              <div className="text-xs font-bold uppercase tracking-[.1em] text-[var(--p)] mb-3">{t('eyebrow')}</div>
+              <h2 className="text-[clamp(28px,4vw,44px)] font-black text-[var(--t1)] mb-3">{t('title')}</h2>
+              <p className="text-[var(--t3)] max-w-lg">{t('sub')}</p>
+            </div>
+            <div className="flex gap-2 flex-shrink-0">
+              {['prev','next'].map((dir) => (
+                <button key={dir} onClick={() => scrollTo(dir === 'prev' ? cur - 1 : cur + 1)} aria-label={dir === 'prev' ? 'Previous' : 'Next'}
+                  className="w-10 h-10 flex items-center justify-center rounded-xl border border-[var(--bd)] bg-[var(--white)] text-[var(--t2)] hover:border-[var(--p3)] hover:text-[var(--p)] hover:bg-[var(--p2)] transition-colors">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="17" height="17">
+                    {dir === 'prev' ? <polyline points="15 18 9 12 15 6"/> : <polyline points="9 18 15 12 9 6"/>}
+                  </svg>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Scrollable track */}
+        <div className="overflow-hidden">
+          <div
+            ref={trackRef}
+            className="flex gap-[18px] overflow-x-auto snap-x snap-mandatory scroll-smooth cursor-grab active:cursor-grabbing select-none px-6 md:px-10 pb-4"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            onMouseDown={onMouseDown} onMouseLeave={onMouseLeave} onMouseUp={onMouseUp} onMouseMove={onMouseMove} onScroll={onScroll}
+          >
+            {VIDEOS.map((v, idx) => {
+              const tItem = items[idx] ?? { num: v.num, tag: v.tag, title: v.title, desc: v.desc }
+              const tag   = TAG_STYLES[v.tag] ?? TAG_STYLES['Getting Started']
+              return (
+                <div key={v.id} onClick={() => openModal(v.id, tItem.title)}
+                  className="flex-shrink-0 w-[300px] snap-start bg-[var(--white)] border border-[var(--bd)] rounded-2xl overflow-hidden cursor-pointer hover:shadow-[0_8px_32px_rgba(142,120,251,.15)] hover:-translate-y-1 transition-all">
+                  <div className="relative aspect-video overflow-hidden bg-[var(--p2)]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={`https://img.youtube.com/vi/${v.id}/hqdefault.jpg`} alt={tItem.title} loading="lazy" className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-black/50 flex items-center justify-center">
+                        <svg viewBox="0 0 24 24" fill="none" width="20" height="20"><polygon points="5 3 19 12 5 21 5 3" fill="var(--p)"/></svg>
+                      </div>
+                    </div>
+                    <div className="absolute bottom-2 end-2 px-2 py-0.5 rounded text-[10px] font-bold text-white bg-black/60">{v.dur}</div>
+                  </div>
+                  <div className="p-5">
+                    <div className="inline-flex text-[11px] font-bold px-3 py-1 rounded-full mb-3" style={{ background: tag.bg, border: `1px solid ${tag.border}`, color: tag.color }}>{tItem.tag}</div>
+                    <div className="text-sm font-bold text-[var(--t1)] mb-2 leading-snug">{tItem.title}</div>
+                    <div className="text-xs text-[var(--t3)] leading-relaxed mb-4">{tItem.desc}</div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold text-[var(--t3)]">{tItem.num} / {total}</span>
+                      <span className="text-xs font-bold flex items-center gap-1" style={{ color: tag.color }}>
+                        {t('watchNow')}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="12" height="12"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Dots */}
+        <div className="flex items-center justify-center gap-3 mt-6">
+          <button onClick={() => scrollTo(cur - 1)} aria-label="Previous"
+            className="w-9 h-9 flex items-center justify-center rounded-xl border border-[var(--bd)] text-[var(--t3)] hover:text-[var(--p)] transition-colors">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div className="flex gap-2">
+            {VIDEOS.map((_, i) => (
+              <button key={i} onClick={() => scrollTo(i)} aria-label={`Go to video ${i + 1}`}
+                className={`rounded-full transition-all ${i === cur ? 'w-6 h-2.5 bg-[var(--p)]' : 'w-2.5 h-2.5 bg-[var(--bd2)] hover:bg-[var(--p3)]'}`} />
+            ))}
+          </div>
+          <button onClick={() => scrollTo(cur + 1)} aria-label="Next"
+            className="w-9 h-9 flex items-center justify-center rounded-xl border border-[var(--bd)] text-[var(--t3)] hover:text-[var(--p)] transition-colors">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </section>
+
+      {/* Modal */}
+      {modal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm px-4" onClick={(e) => { if (e.target === e.currentTarget) closeModal() }}>
+          <div className="bg-[var(--white)] rounded-2xl overflow-hidden w-full max-w-3xl shadow-2xl">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--bd)]">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-[var(--p)]" />
+                <span className="text-sm font-bold text-[var(--t1)] truncate max-w-[340px]">{modal.title}</span>
+              </div>
+              <button onClick={closeModal} aria-label="Close video"
+                className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[var(--p2)] text-[var(--t3)] transition-colors">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" width="14" height="14" aria-hidden="true">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>
+            <div className="aspect-video">
+              <iframe src={`https://www.youtube.com/embed/${modal.id}?autoplay=1&rel=0`}
+                allow="autoplay; encrypted-media" allowFullScreen title={modal.title} className="w-full h-full" />
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}

@@ -1,0 +1,102 @@
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 64px; padding: 0 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: all .3s;
+}
+.scrolled {
+  background: var(--nav-scrolled-bg);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--bd);
+  box-shadow: 0 2px 20px rgba(142,120,251,.08);
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; border-radius: var(--r-sm); }
+.logoMark {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--p); display: flex; align-items: center; justify-content: center;
+}
+.logoMark svg { width: 18px; height: 18px; }
+.logoText { font-size: 18px; font-weight: 800; color: var(--t1); letter-spacing: -.03em; }
+.links { display: flex; align-items: center; gap: 4px; }
+.link {
+  padding: 7px 14px; border-radius: var(--r-sm);
+  font-size: 13px; font-weight: 500; color: var(--t2);
+  text-decoration: none; transition: all var(--dur-fast);
+}
+.link:hover { background: var(--p2); color: var(--p); }
+.linkActive  { background: var(--p2); color: var(--p); font-weight: 600; }
+
+.cta { display: flex; align-items: center; gap: 8px; }
+.ghost {
+  padding: 9px 20px; border-radius: var(--r-md);
+  font-size: 13px; font-weight: 600; color: var(--t2);
+  border: 1.5px solid var(--bd2); background: transparent;
+  cursor: pointer; transition: all var(--dur-fast); text-decoration: none;
+  display: inline-flex; align-items: center;
+}
+.ghost:hover { background: var(--p2); border-color: var(--p3); color: var(--p); }
+.primary {
+  padding: 9px 22px; border-radius: var(--r-md);
+  font-size: 13px; font-weight: 700; color: #fff;
+  background: var(--p); border: none; cursor: pointer; transition: all var(--dur-base);
+  text-decoration: none; display: inline-flex; align-items: center; gap: 7px;
+}
+.primary:hover { background: #7a64f0; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(142,120,251,.35); }
+
+/* Hamburger */
+.burger {
+  display: none;
+  align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: var(--r-md);
+  border: 1.5px solid var(--bd2); background: var(--white);
+  cursor: pointer; color: var(--t1); transition: all var(--dur-base);
+}
+.burger:hover { background: var(--p2); border-color: var(--p3); color: var(--p); }
+.burgerOpen   { background: var(--p2); border-color: var(--p3); color: var(--p); }
+
+/* Mobile menu — animate via max-height */
+.mobileMenu {
+  position: fixed; top: 64px; left: 0; right: 0;
+  background: var(--mobile-menu-bg);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--bd);
+  box-shadow: 0 8px 32px rgba(142,120,251,.1);
+  z-index: 99;
+  display: flex; flex-direction: column;
+  padding: 0 24px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .3s ease, padding .3s ease;
+  pointer-events: none;
+}
+.mobileMenuOpen {
+  max-height: 480px;
+  padding: 16px 24px 24px;
+  pointer-events: all;
+}
+
+.mobileLink {
+  padding: 14px 0; font-size: 16px; font-weight: 600;
+  color: var(--t2); text-decoration: none;
+  border-bottom: 1px solid var(--bd); transition: color var(--dur-fast);
+}
+.mobileLink:hover      { color: var(--p); }
+.mobileLinkActive      { color: var(--p); }
+
+.mobileCta {
+  display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;
+}
+.mobileCta .ghost,
+.mobileCta .primary { flex: 1; justify-content: center; text-align: center; }
+
+/* Tablet (768–900px) */
+@media (max-width: 900px) {
+  .nav    { padding: 0 20px; }
+  .links  { display: none; }
+  .burger { display: flex; }
+  .desktopOnly { display: none; }
+}
+
+@media (min-width: 769px) and (max-width: 900px) {
+  .nav { padding: 0 32px; }
+}

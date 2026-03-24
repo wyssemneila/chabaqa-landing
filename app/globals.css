@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap');
+
+/* ── Brand tokens (light) ─────────────────────────────────────────────── */
+:root {
+  --p:       #8e78fb;
+  --p2:      #ede9ff;
+  --p3:      #c4b8fd;
+  --orange:  #ff9b28;
+  --o2:      #fff3e4;
+  --cyan:    #47c7ea;
+  --c2:      #e4f8fd;
+  --pink:    #f65887;
+  --pk2:     #ffe4ee;
+  --bg:      #f7f7fe;
+  --white:   #ffffff;
+  --t1:      #1a1730;
+  --t2:      #46426a;
+  --t3:      #9590b8;
+  --bd:      #e8e4ff;
+  --bd2:     #d4ccff;
+  --nav-bg:  rgba(247,247,254,0.94);
+  --footer-bg: #1a1730;
+}
+
+/* ── Dark mode tokens ─────────────────────────────────────────────────── */
+.dark {
+  --bg:      #12111a;
+  --white:   #1c1a2e;
+  --t1:      #f0eeff;
+  --t2:      #b8b2e0;
+  --t3:      #7a7598;
+  --bd:      #2e2a4a;
+  --bd2:     #413b6e;
+  --p2:      #1e1a35;
+  --p3:      #3d3570;
+  --nav-bg:  rgba(18,17,26,0.94);
+  --footer-bg: #0d0c17;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--t1);
+  font-family: 'Montserrat', sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+
+[dir="rtl"] body { font-family: 'Tajawal', sans-serif; }
+
+/* ── Scroll reveal ────────────────────────────────────────────────────── */
+.reveal, .reveal-left, .reveal-right { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal-left  { transform: translateX(-28px); }
+.reveal-right { transform: translateX(28px);  }
+[dir="rtl"] .reveal-left  { transform: translateX(28px);  }
+[dir="rtl"] .reveal-right { transform: translateX(-28px); }
+.in-view { opacity: 1 !important; transform: none !important; }
+
+.stagger > * { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.stagger.in-view > * { opacity: 1; transform: none; }
+.stagger.in-view > *:nth-child(1) { transition-delay: 0.05s; }
+.stagger.in-view > *:nth-child(2) { transition-delay: 0.13s; }
+.stagger.in-view > *:nth-child(3) { transition-delay: 0.21s; }
+.stagger.in-view > *:nth-child(4) { transition-delay: 0.29s; }
+.stagger.in-view > *:nth-child(5) { transition-delay: 0.37s; }
+.stagger.in-view > *:nth-child(6) { transition-delay: 0.45s; }
+.stagger.in-view > *:nth-child(7) { transition-delay: 0.53s; }
+
+/* ── Keyframes ────────────────────────────────────────────────────────── */
+@keyframes blobMove   { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-20px) scale(1.05)} 66%{transform:translate(-20px,15px) scale(0.95)} }
+@keyframes floatPill  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+@keyframes blink      { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes ringPulse  { 0%,100%{transform:scale(1);opacity:.25} 50%{transform:scale(1.05);opacity:.1} }
+@keyframes fadeDown   { from{opacity:0;transform:translateY(-16px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeUp     { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
