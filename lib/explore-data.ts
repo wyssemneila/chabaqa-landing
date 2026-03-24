@@ -121,7 +121,7 @@ export const EXPLORE_ITEMS: ExploreItem[] = [
     creator: 'Mohamed Ismail', creatorInitials: 'MI', creatorColor: '#f65887',
     creatorAvatar: '/images/explore/banner2.jpeg',
     banner: '/images/explore/banner5.jpeg',
-    price: 'free', members: 11, verified: true,
+    price: 'free', members: 11, rating: 4.6, ratingCount: 7, verified: true,
   },
   {
     id: '4',
@@ -131,7 +131,7 @@ export const EXPLORE_ITEMS: ExploreItem[] = [
     creator: 'Ahmed Hatem', creatorInitials: 'AH', creatorColor: '#8e78fb',
     creatorAvatar: '/images/explore/banner8.webp',
     banner: '/images/explore/banner11.png',
-    price: 'free', rating: 4.9, ratingCount: 8, duration: '60 min', verified: true,
+    price: 'free', members: 4, rating: 4.9, ratingCount: 8, verified: true,
   },
   {
     id: '5',
@@ -141,7 +141,7 @@ export const EXPLORE_ITEMS: ExploreItem[] = [
     creator: 'Ahmed Hatem', creatorInitials: 'AH', creatorColor: '#8e78fb',
     creatorAvatar: '/images/explore/banner8.webp',
     banner: '/images/explore/banner10.webp',
-    price: 'free', members: 12, verified: true,
+    price: 'free', members: 12, rating: 4.5, ratingCount: 6, verified: true,
   },
   {
     id: '6',
@@ -151,7 +151,7 @@ export const EXPLORE_ITEMS: ExploreItem[] = [
     creator: 'Ahmed Hatem', creatorInitials: 'AH', creatorColor: '#8e78fb',
     creatorAvatar: '/images/explore/banner8.webp',
     banner: '/images/explore/banner12.png',
-    price: 80, currency: 'TND', duration: '45 min', rating: 5.0, ratingCount: 5, verified: true,
+    price: 80, currency: 'TND', members: 3, rating: 5.0, ratingCount: 5, verified: true,
   },
   {
     id: '7',
@@ -171,7 +171,7 @@ export const EXPLORE_ITEMS: ExploreItem[] = [
     creator: 'Bassem Dridi', creatorInitials: 'BD', creatorColor: '#ff9b28',
     creatorAvatar: '/images/explore/banner7.webp',
     banner: '/images/explore/banner7.webp',
-    price: 'free', members: 23, verified: true,
+    price: 'free', members: 23, rating: 4.7, ratingCount: 10, verified: true,
   },
   {
     id: '9',
@@ -181,7 +181,7 @@ export const EXPLORE_ITEMS: ExploreItem[] = [
     creator: 'Ahmed Hatem', creatorInitials: 'AH', creatorColor: '#8e78fb',
     creatorAvatar: '/images/explore/banner8.webp',
     banner: '/images/explore/banner9.webp',
-    price: 'free', date: 'Mar 30, 2025', rating: 4.7, ratingCount: 19, verified: true,
+    price: 'free', members: 8, rating: 4.7, ratingCount: 19, verified: true,
   },
   {
     id: '10',
@@ -191,7 +191,7 @@ export const EXPLORE_ITEMS: ExploreItem[] = [
     creator: 'Wyssem Neila', creatorInitials: 'WN', creatorColor: '#47c7ea',
     creatorAvatar: '/images/explore/banner1.jpeg',
     banner: '/images/explore/frensh1.png',
-    price: 49, currency: 'TND', members: 45, duration: '4 weeks', verified: false,
+    price: 49, currency: 'TND', members: 45, rating: 4.4, ratingCount: 9, verified: false,
   },
   {
     id: '11',
@@ -211,6 +211,6 @@ export const EXPLORE_ITEMS: ExploreItem[] = [
     creator: 'Ahmed Hatem', creatorInitials: 'AH', creatorColor: '#8e78fb',
     creatorAvatar: '/images/explore/banner8.webp',
     banner: '/images/explore/banner9.webp',
-    price: 'free', members: 5, verified: true,
+    price: 'free', members: 5, rating: 4.3, ratingCount: 3, verified: true,
   },
 ]
