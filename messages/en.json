@@ -174,6 +174,16 @@
     "results": "results",
     "clearAll": "Clear filters",
     "noResults": "No results found",
-    "noResultsSub": "Try adjusting your search or filters to find what you're looking for."
+    "noResultsSub": "Try adjusting your search or filters to find what you're looking for.",
+    "promoLabel": "Start building",
+    "promoBadge": "For Creators, By Creators",
+    "promoTitle": "Ready to Build Your Own Community?",
+    "promoSub": "Join hundreds of creators in Tunisia and MENA who are building, engaging, and monetizing their audience with Chabaqa.",
+    "promoF1": "Build communities",
+    "promoF2": "Sell courses",
+    "promoF3": "Earn income",
+    "promoF4": "Run challenges",
+    "promoCTA": "Start for free — no card needed",
+    "promoSecondary": "Explore more creators"
   }
 }
