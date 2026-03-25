@@ -2,6 +2,7 @@
 import { ThemeProvider } from 'next-themes'
 import { NextIntlClientProvider } from 'next-intl'
 import type { ReactNode } from 'react'
+import LoadingScreen from '@/components/ui/LoadingScreen'
 
 interface Props {
   children: ReactNode
@@ -18,6 +19,7 @@ export default function Providers({ children, locale, messages }: Props) {
         enableSystem={false}
         storageKey="chabaqa_theme"
       >
+        <LoadingScreen />
         {children}
       </ThemeProvider>
     </NextIntlClientProvider>
